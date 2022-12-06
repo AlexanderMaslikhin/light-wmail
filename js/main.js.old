@@ -1,0 +1,263 @@
+
+"use strict";
+
+$.mobile.autoInitializePage = false;
+
+if ([].indexOf) {
+  var find = function(array, value) {
+    return array.indexOf(value);
+  }
+} else {
+  var find = function(array, value) {
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] === value) return i;
+    }
+    return -1;
+  }
+}
+
+function mailBox() { //main class for working
+	var dirs = [];
+	this.cur_box = "";
+	var me = this;
+	this.mess_list_loaded = [];
+	this.checkedMessages = [];
+	this.listCount = 20;
+
+	function makeDirs(dirsObj, ul_id, container) {
+		var ulCont = container.appendChild(document.createElement('ul'));
+		ulCont.id = ul_id;
+		ulCont.className = "list-unstyled ";
+		ulCont.className += (container.nodeName == "LI") ? "collapse" : "component";
+		dirsObj.forEach( function(element, index) {
+			var liCont = ulCont.appendChild(document.createElement('li'));
+			var node = liCont.appendChild(document.createElement('a'));
+			node.innerHTML = element.name;
+			if(+element.unseen) {
+				$(node).addClass("unseen");
+				$(node).append(" (" + element.unseen + ")");
+			}
+//			node.href = "#";
+//			node.id = ul_id + index;
+			node.setAttribute("boxpath",element.fullpath);
+			$(node).on('click', function () {
+				$("a.selected").removeClass("selected");
+				$(this).addClass("selected");
+				$("#foldername_header").html(this.innerHTML);
+				if(me.cur_box != this.getAttribute("boxpath")) me.openBox(this.getAttribute("boxpath")); //open message list from the 
+			});
+			if(!(~element.options.indexOf('HasNoChildren'))) {
+				$(node).addClass("dropdown-toggle");
+				node.setAttribute("data-toggle","collapse");
+				node.setAttribute("aria-expanded","false");
+				node.href = "#" + "sub" + ul_id + "_" + index;
+				makeDirs(element.children, "sub" + ul_id + "_" + index, liCont);
+			}
+		});
+	}
+
+	this.dirTree = function(dir_js) {
+		dirs = dir_js;
+
+		dirs.sort( function(a,b) {
+		//	if( a.name > b.name ) return 1;
+			if( b.name == "INBOX" ) return 1;
+			return -1;
+		});
+	    makeDirs(dirs,"rootMenu", document.getElementById("sidebar"));
+	}
+}
+
+mailBox.prototype.openBox = function(boxName) {
+
+	var me = this;
+	this.cur_box = boxName;
+	this.allChecked = false;
+	messages.innerHTML = "";
+	$(".ph-item").show(0);
+
+	var query_json = {
+		opertaion: 'getList',
+		boxName: boxName
+	};
+	function printList(m_list) {
+//	alert(JSON.parse(json_str1).From);
+
+/*		me.mess_list_loaded = JSON.parse(list.replace(/</g, '&lt;').replace(/>/g, '&gt;'), function (key, value) {
+			if( key == 'Received-Date') return new Date( value );
+			return value;
+		});*/
+		me.mess_list_loaded = m_list.list;
+		me.full_count = m_list.fullCount;
+		var messcontent="";
+			//list legend
+		messcontent += '<div class="row my-2 align-items-center d-flex align-items-stretch">';
+        messcontent += '<div class="col-auto list_legend d-flex justify-content-center mx-1 mx-md-2" checkall>N</div>';
+        messcontent += '<div class="d-flex col-3 col-md-2 mx-1 mx-md-2 px-1 px-md-2 list_legend align-items-center">from</div>';
+        messcontent += '<div class="d-flex col-5 col-md-7 col-xl-8 mx-1 mx-md-2 px-1 px-md-2 list_legend align-items-center">subject</div>';
+        messcontent += '<div class="col col-md-1 px-1 d-flex align-items-center list_legend">...</div></div>';
+
+		me.mess_list_loaded.forEach( function(element, index) {
+			// statements
+			var now = new Date();
+			var date_opts = date_opts_past;
+			if(now.getFullYear() == element['Received-Date'].getFullYear()) {
+				date_opts = date_opts_this_year;
+
+				if(now.getDate() == element['Received-Date'].getDate() &&
+						 now.getMonth() == element['Received-Date'].getMonth()) date_opts = date_opts_today;
+			}
+
+            //message-list
+			messcontent += '<input type=checkbox class="chooser-chk" id="' + element.uid +'">';
+			messcontent += '<div class="row my-2 align-items-center d-flex align-items-stretch' + (element.new?' new':'') + '" mess-index="' + index + '" uid="' + element.uid + '">';
+			messcontent += '<div class="col-auto mess_logo mx-1 mx-md-2"><label class="pillow d-flex align-items-center justify-content-center" for="' + element.uid + '">' + (index+1) + '</label></div>';
+			messcontent += '<div class="d-flex col-3 col-md-2 mx-1 mx-md-2 px-1 px-md-2 mfrom align-items-center"><div class="text-truncate">' + element.From + '</div></div>';
+			messcontent += '<div class="d-flex col-5 col-md-7 col-xl-8 mx-1 mx-md-2 px-1 px-md-2 msubject align-items-center"><div class="text-truncate">';
+			if(element.attachments.length) {
+				messcontent += '&#128206; ';
+			}
+			messcontent += (element.Subject?element.Subject:"") + '</div></div>';
+			messcontent += '<div class="col col-md-1 px-1 d-flex align-items-center mdate">' + element['Received-Date'].toLocaleString("ru",date_opts) + '</div>';
+			messcontent += '</div>';
+		});
+		if(!me.mess_list_loaded.length) { //empty list
+			messcontent += '<div class="row my-2 align-items-center d-flex align-items-stretch"><div class="d-flex col mx-1 px-1 mfrom align-items-center justify-content-center">emtpy list</div></div>';
+		}
+
+		$(".ph-item").hide(0);
+		$("#mailreader").hide(0);
+//		document.getElementById("mailreader").textContent = "";
+		$("#messages").html(messcontent);
+		if( me.full_count > me.listCount ) {
+			$('#messages').append('<button type="button" id="morebutton" class="btn">more...</button>');
+		}
+		$("#messages").show(0)
+		$("[mess-index]").on('click', function (){
+			$("#messages").html("");
+			$("#messages").hide(0);
+			$("#mailreader").show(0);
+			var mailreader = document.getElementById("mailreader-headers");
+			mailreader.firstElementChild.firstElementChild.firstElementChild.textContent = "Test insertion subject";
+			mailreader.firstElementChild.children[1].firstElementChild.textContent = "Vasiliy Alibabaeivich <vasya@mail.ru>";
+//			alert("index = " + this.getAttribute("mess-index") + "\nuid = " + this.getAttribute("uid") );
+			me.cur_box = "";
+		});
+		$("[checkall]").on("click", function () {
+			me.allChecked = !me.allChecked;
+			me.checkedMessages = [];
+			me.mess_list_loaded.forEach(function(element, index) {
+				if(me.allChecked) me.checkedMessages.push(element.uid);
+//				else me.checkedMessages.pop();
+			});
+			$(".chooser-chk").prop("checked", me.allChecked);
+			alert(me.checkedMessages);
+			event.stopPropagation();
+		});
+		$(".pillow").on("click", function() {
+			var uid = this.getAttribute("for");
+			var index;
+			if(~(index = find(me.checkedMessages,uid))) {
+				me.checkedMessages.splice(index,1);
+			}
+			else me.checkedMessages.push(uid);
+			alert(me.checkedMessages);
+			event.stopPropagation();
+		});
+	}
+
+//	var json_str1 = prompt("Введите строку", "");//'{"From":"Herrrr"}';
+	var getListRequest = {
+		action: "getBoxList",
+		boxpath: boxName,
+		rowCount: me.listCount
+	};
+	$.ajax({
+			type: "POST",
+			url: document.URL,
+			data: JSON.stringify(getListRequest),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function(result) { 
+/*				var list = result.list;
+		me.mess_list_loaded = JSON.parse(list.replace(/</g, '&lt;').replace(/>/g, '&gt;'), function (key, value) {
+			if( key == 'Received-Date') return new Date( value );
+			return value;
+		});*/	
+				result.list.forEach(function(item,i,arr) {
+					item['Received-Date'] = new Date( item['Received-Date'] );
+					for(var key in item) {
+						if(typeof(item[key]) == 'string') {
+							item[key] = item[key].replace(/</g, '&lt;').replace(/>/g, '&gt;');
+						}	
+					}
+				});
+				me.firstMailNum = result.first;
+				printList(result);
+			},
+			failure: function(errMsg) { alert(errMsg); }
+		});
+//	printList(json_str1);
+/*	$.post("http://sasha.modem.ru:8081/1.php","",printList,"");*/
+};
+
+
+
+var box;
+var date_options = { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric"};
+var date_opts_today = { hour: "numeric", minute: "numeric"};
+var date_opts_this_year = { day: "numeric", month: "short"};
+var date_opts_past = { day: "numeric", month: "numeric", year: "numeric"};
+
+
+$(document).ready(function () {
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+    $(document).on("swiperight", function(event) {
+    	if( !$('#sidebar').hasClass('active') ) {
+    		$('#sidebar').addClass('active');
+    	}
+    });
+    $(document).on("swipeleft", function(event) {
+    	if( $('#sidebar').hasClass('active') ) {
+    		$('#sidebar').removeClass('active');
+    	}
+    });
+    $("#mailreader").hide(0);
+    box = new mailBox();
+    var request = {
+    	action: "get_dir_tree"
+    };
+
+	$.ajax({
+			type: "POST",
+			url: document.URL,
+			data: JSON.stringify(request),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function(dirs) { 
+				box.dirTree(dirs);
+			    box.openBox('INBOX');
+			},
+			failure: function(errMsg) { alert(errMsg); }
+		});
+//    box.dirTree(dirs_json);
+});
+
+/*var mailContent = {
+	headers: [],
+	from: null,
+	subject: null,
+	date: null,
+	body: null
+};
+
+var messPreview = {
+	uid: 1020102,
+	from: "email",
+	date: "date",
+	subject: "string",
+	attachments: []
+}*/

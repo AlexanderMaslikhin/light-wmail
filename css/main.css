@@ -1,0 +1,366 @@
+body {
+	background-color: #ddd;
+	font: normal 1em Arial;
+}
+
+img {
+	max-width: 100%;
+}
+
+a {
+	color: #525252;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #525252;
+}
+#content {
+	transition: all 0.2s;	
+}
+
+#sidebar li > a {
+	text-decoration: none;
+	font-size: 0.9em;
+	transition: all 0.3s 0.02s ease;
+}
+#sidebar li > a:hover, #sidebar li > a.selected:hover  {
+	text-decoration: none;
+	background: #999;
+	color: #e2e2e2;
+}
+
+#sidebar li > a.selected {
+	background: #ddd;
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+#sidebar li > a.unseen {
+	font-weight: bolder;
+}
+
+#rootMenu li {
+	cursor: pointer;
+}
+
+#mailreader-content {
+	background-color: #fff;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+nav.navbar {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+span.navbar-brand {
+	padding-left: 5px;
+}
+
+nav > button.btn:active, nav > button.btn:focus, button.btn.compose:active, button.btn.compose:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+#foldername_header, #mess_list{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.sidebar-header {
+	margin-top: 11px;
+	margin-left: 10px;
+	margin-bottom: 11px;
+}
+
+a.dropdown-item {
+	cursor: pointer;
+}
+
+#sidebar {
+	min-width: 250px;
+	max-width: 250px;
+	min-height: 100vh;
+	transition: all 0.2s;
+	background-color: #bbb;
+}
+
+#sidebar.active {
+	margin-left: -250px;
+}
+
+
+#sidebar ul {
+	padding-left: 15px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    display: block;
+}
+#mess_list {
+	background-color: #e8e8e8;
+	min-height: calc(100vh - 94px);
+}
+
+
+#sidebar a[data-toggle="collapse"] {
+    position: relative;
+}
+
+#sidebar .dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+/* placeholder */
+.ph-col.big.round {
+	border-radius: 50%;
+	flex: 0 0 20px;
+}
+
+.ph-col.big.rest {
+	margin-left: 10px;
+	flex-basis: calc(100% - 30px);
+}
+
+.ph-item {
+	padding: 10px 10px 10px 10px;
+}
+
+.ph-col-12 {
+	height: 25%;
+	margin-bottom: 10px;
+}
+
+#messages .mess_logo, #messages .col-1 {
+	padding: 0 !important;
+	margin-left: 0 !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+#messages .mfrom, #messages .msubject, #messages .mdate, #messages .mattach, #messages .list_legend {
+	font: normal 0.8em Arial;
+	background-color: #fafafa;
+	margin-left: 0 !important;
+/*	margin-top: 2px;*/
+}
+
+#messages .list_legend {
+	background-color: #a8a8a8;
+	margin-bottom: 7px;
+}
+
+#messages .col-auto.list_legend {
+	width: 36px;
+	padding: 0 !important;
+}
+
+#messages .mfrom::before, #messages .msubject::before {
+	text-decoration: underline;
+	font-style: italic;
+}
+/*#messages .col.mfrom::before {
+	content: "From: ";
+}
+#messages .col.msubject::before {
+	content: "Subject: ";
+}*/
+
+.pillow {
+	width: 36px;
+	height: 36px;
+	background-color: #fafafa;
+	border-radius: 5px;
+	margin: 0;
+}
+
+#messages .row.new .mfrom, #messages .row.new .msubject, #messages .row.new  .mdate, #messages .row.new  .mattach, #messages .row.new  .pillow {
+	background-color: #cccccc;
+	font-weight: bold;
+/*	color: #ffffff;*/
+}
+
+#loginForm .form-control {
+	border: none;
+	outline: none !important;
+	box-shadow: none !important;	
+	font-size: 0.9rem;
+}
+
+#menu-main .btn-secondary, #loginForm .btn-secondary {
+	background-color: #f8f9fa;
+	color: #000;
+	border: none;
+	outline: none !important;
+	box-shadow: none !important;	
+	font-size: 0.9rem;
+}
+
+#menu-main .btn-secondary:hover, #loginForm .btn-secondary:hover {
+	background-color: #e8e8e8;
+}
+
+#tool-bar .btn-secondary, #mailreader .btn-secondary  {
+	background-color: #e8e8e8;
+	color: #000;
+	border: none;
+	outline: none !important;
+	box-shadow: none !important;
+	padding: 6px;
+}
+
+#tool-bar .btn-secondary {
+	font-size: 0.8em;
+}
+
+#tool-bar .btn-secondary:hover, #mailreader .btn-secondary:hover, #menu-main .btn-secondary:hover {
+	background-color: #ddd;
+}
+
+#tool-bar {
+	background-color: #e8e8e8;
+}
+
+#mailreader-headers, #mailreader-content {
+	background-color: #f6f6f6;
+}
+
+#mailreader .btn-secondary {
+	background-color: #f6f6f6;
+	font-size: 0.8rem;
+}
+
+#mailreader .mfrom::before, #mailreader .msubject::before {
+	font-style: italic;
+	color: #999;
+	margin-right: 10px;
+}
+
+#mailreader .mfrom::before {
+	content: "from:";
+}
+
+#mailreader .msubject::before {
+	content: "subject:";
+}
+
+#mailreader {
+	font-size: 0.8em;
+}
+
+#mailreader-headers, #mailreader-content {
+	margin-top: 20px;
+}
+
+#mailreader-headers .col .row .col.msubject, #mailreader-headers .col .row .col.mfrom{
+	border-bottom: solid 1px #aaa;
+	color: #555;
+}
+
+.dropdown-item {
+	font: normal 0.8em Arial;
+	color: 555;
+}
+
+.row[uid], .list_legend[checkall] {
+	cursor: pointer;
+}
+
+.m_logo_sign {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.chooser-chk {
+	display: none;
+}
+
+.chooser-chk:checked + div.row.my-2 .pillow, .chooser-chk:checked + div.row.my-2.new .pillow {
+	background-color: #555 !important;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+	#sidebar.active ~ #content {
+		margin-right: -250px;
+	}
+	.wrapper {
+		overflow-x: hidden;
+	}
+	#messages .col.mfrom::before, #messages .col.msubject::before {
+		content: "";
+	}
+	#foldername_header {
+		font-size: 0.8em;
+		padding-right: 1px;
+	}
+	#tool-bar .col-auto{
+		padding-left: 1px;
+	}
+	#messages .mfrom, #messages .msubject, #messages .mdate, #messages .mattach {
+		font: normal 0.6em Arial;
+		background-color: #fafafa;
+   }
+   #mailreader-headers, #mailreader-content {
+		margin-top: 15px;
+   }
+}
+
+
+@media (max-width: 420px) {
+	#tool-bar .btn-secondary {
+		font-size: 0.6em;
+		padding: 2px;
+	}
+	#foldername_header {
+		font-size: 0.7em;
+	}
+}
+
+@media (max-width: 250px) {
+    #sidebar {
+		min-width: 180px;
+		max-width: 180px;
+        margin-left: -180px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+	#sidebar.active ~ #content {
+		margin-right: -180px;
+	}
+	.wrapper {
+		overflow-x: hidden;
+	}
+	#content {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	#messages .col.mfrom::before, #messages .col.msubject::before {
+		content: "";
+	}
+	#foldername_header {
+		display: none;		
+	}
+	#tool-bar .col-auto{
+		padding-left: 15px;
+	}
+}

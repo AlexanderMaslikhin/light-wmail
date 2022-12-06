@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/placeholder-loading.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Hello, world!</title>
+  </head>
+<body>
+<div class="container">
+  <div class="row"><div class="col">&nbsp;</div></div>
+  <div class="row">
+    <div class="col-1 col-md"></div>
+    <div class="col">
+       <center style="color:red">
+          <?php
+          echo $message;
+          ?>
+        </center>      
+      <form id="loginForm" method="post">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name='login' placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name='password'>
+        </div>
+        <button type="submit" class="btn btn-secondary" name='bxod' value=1>Login</button>
+      </form>
+    </div>
+    <div class="col-1 col-md"></div>
+  </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
