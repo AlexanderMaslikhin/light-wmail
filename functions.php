@@ -146,10 +146,10 @@ function parse_html_body($body, $charset) {
 	$nodes = $doc->getElementsByTagName('head');
 	$head = $nodes->item(0);
 //remove <meta> tags
-	$metas = $doc->getElementsByTagName('meta');
-	while($metas->count()>0) {
-		$doc->removeChild($metas->item(0));
-	}
+	// $metas = $doc->getElementsByTagName('meta');
+	// while($metas->count()>0) {
+	// 	$doc->removeChild($metas->item(0));
+	// }
 //modifying <style> 
 	$styles = $doc->getElementsByTagName('style');
 	while($styles->count()>0){
