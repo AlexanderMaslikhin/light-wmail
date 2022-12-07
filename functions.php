@@ -148,7 +148,7 @@ function parse_html_body($body, $charset) {
 //remove <meta> tags
 	$metas = $doc->getElementsByTagName('meta');
 	while($metas->count()>0) {
-		$head->removeChild($metas->item(0));
+		$doc->removeChild($metas->item(0));
 	}
 //modifying <style> 
 	$styles = $doc->getElementsByTagName('style');
