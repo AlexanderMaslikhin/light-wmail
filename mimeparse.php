@@ -14,7 +14,7 @@ RFC 3501
 	)
 )
 
-(BODYSTRUCTURE ((("text" "plain" ("charset" "windows-1251") NIL NIL "8bit" 2499 58 NIL NIL NIL NIL)("text" "html" ("charset" "windows-1251") NIL NIL "8bit" 7191 166 NIL NIL NIL NIL) "alternative" ("boundary" "------------EAF73BB1FEAF90108D5E1EAA") NIL NIL NIL)("application" "pgp" ("name" "22022019130048.asc") NIL NIL "7bit" 884 NIL ("attachment" ("filename" "22022019130048.asc")) NIL NIL) "mixed" ("boundary" "------------96036D19FC52097AA42EF9CD") NIL ("en-US") NIL))
+(BODYSTRUCTURE ((("text" "plain" ("charset" "windows-1251") NIL NIL "8bit" 2499 58 NIL NIL NIL NIL)("text" "html" ("charset" "windows-1251") NIL NIL "8bit" 7191 166 NIL NIL NIL NIL) "alternative" ("boundary" "------------EAF7****FEAF901******E1EAA") NIL NIL NIL)("application" "pgp" ("name" "22022019130048.asc") NIL NIL "7bit" 884 NIL ("attachment" ("filename" "22022019130048.asc")) NIL NIL) "mixed" ("boundary" "------------96036D19FC52097AA42EF9CD") NIL ("en-US") NIL))
 BODYSTRUCTURE 
 (
 	1. Body-type (Content-type):"text" 
@@ -200,7 +200,7 @@ class bodyMime {
 		}
 		if( $i>0 ) { //multipart body part
 			$part['type'] = 'multipart';
-//-------	"mixed" ("boundary" "------------96036D19FC52097AA42EF9CD") NIL          ("en-US")    NIL
+//-------	"mixed" ("boundary" "------------9***********************D") NIL          ("en-US")    NIL
 //-------	subtype   par_list                                          disposition   language    location
 			$part['subtype'] = preg_replace("/[\s+\"]/","",strstr($str,"(",true));
 			list($par_list,$str) = strip(strstr($str,"("));
